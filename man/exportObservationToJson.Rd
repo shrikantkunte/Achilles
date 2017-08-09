@@ -34,4 +34,3 @@ Creates individual files for Observation report found in Achilles.Web
   exportObservationToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

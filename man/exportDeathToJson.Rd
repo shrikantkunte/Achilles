@@ -34,4 +34,3 @@ Creates individual files for Death report found in Achilles.Web
   exportDeathToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

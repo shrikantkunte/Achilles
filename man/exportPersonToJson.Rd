@@ -34,4 +34,3 @@ Creates individual files for Person report found in Achilles.Web
   exportPersonToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

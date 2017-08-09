@@ -34,4 +34,3 @@ Creates individual files for Data Density report found in Achilles.Web
   exportDataDensityToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

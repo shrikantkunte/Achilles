@@ -34,4 +34,3 @@ Creates individual files for Visit report found in Achilles.Web
   exportVisitToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

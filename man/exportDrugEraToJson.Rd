@@ -34,4 +34,3 @@ Creates individual files for Drug Era report found in Achilles.Web
   exportDrugEraToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

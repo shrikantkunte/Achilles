@@ -34,4 +34,3 @@ Creates individual files for Drug report found in Achilles.Web
   exportDrugToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

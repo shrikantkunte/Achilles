@@ -34,4 +34,3 @@ Creates individual files for Achilles Heel report found in Achilles.Web
   exportHeelToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

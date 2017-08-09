@@ -4,7 +4,7 @@
 \alias{fetchAchillesHeelResults}
 \title{fetchAchillesHeelResults}
 \usage{
-fetchAchillesHeelResults(connectionDetails, resultsDatabase)
+fetchAchillesHeelResults(connectionDetails, resultsDatabaseSchema)
 }
 \arguments{
 \item{connectionDetails}{An R object of type ConnectionDetail (details for the function that contains server info, database type, optionally username/password, port)}
@@ -28,4 +28,3 @@ that should really be fixed) and warnings (things that should at least be invest
   fetchAchillesHeelResults(connectionDetails, "scratch")
 }
 }
-

@@ -39,4 +39,3 @@ exportToJson(connectionDetails, cdmDatabaseSchema="cdm5", outputPath=jsonFolderP
 addDatasource(jsonFolderPath, "your_data_name")
 }
 }
-

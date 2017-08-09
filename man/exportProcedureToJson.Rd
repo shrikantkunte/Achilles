@@ -34,4 +34,3 @@ Creates individual files for Procedure report found in Achilles.Web
   exportProcedureToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

@@ -2,27 +2,40 @@
 % Please edit documentation in R/Achilles.R
 \name{achillesHeel}
 \alias{achillesHeel}
-\title{execution of data quality rules}
+\title{execution of data quality rules (for v5 and above)}
 \usage{
 achillesHeel(connectionDetails, cdmDatabaseSchema,
-  oracleTempSchema = cdmDatabaseSchema,
-  resultsDatabaseSchema = cdmDatabaseSchema, cdmVersion = "5",
-  vocabDatabaseSchema = cdmDatabaseSchema)
+  resultsDatabaseSchema = cdmDatabaseSchema,
+  scratchDatabaseSchema = resultsDatabaseSchema, cdmVersion = "5",
+  sqlOnly = FALSE, numThreads = 1, tempHeelPrefix = "tmpheel",
+  dropScratchTables = FALSE, ThresholdAgeWarning = 125,
+  ThresholdOutpatientVisitPerc = 0.43, ThresholdMinimalPtMeasDxRx = 20.5)
 }
 \arguments{
 \item{connectionDetails}{An R object of type ConnectionDetail (details for the function that contains server info, database type, optionally username/password, port)}
 
 \item{cdmDatabaseSchema}{string name of database schema that contains OMOP CDM. On SQL Server, this should specifiy both the database and the schema, so for example 'cdm_instance.dbo'.}
 
-\item{oracleTempSchema}{For Oracle only: the name of the database schema where you want all temporary tables to be managed. Requires create/insert permissions to this database.}
+\item{resultsDatabaseSchema}{string name of database schema that we can write final results to. Default is cdmDatabaseSchema. On SQL Server, this should specifiy both the database and the schema, 
+so for example 'results.dbo'.}
 
-\item{resultsDatabaseSchema}{string name of database schema that we can write results to. Default is cdmDatabaseSchema. On SQL Server, this should specifiy both the database and the schema, so for example 'results.dbo'.}
+\item{scratchDatabaseSchema}{(only affects multi-threaded mode) Name of a fully qualified schema that is accessible to/from the resultsDatabaseSchema, that can store all of the scratch tables. Default is resultsDatabaseSchema.}
 
-\item{cdmVersion}{Define the OMOP CDM version used:  currently support "4" and "5".  Default = "4"}
+\item{cdmVersion}{Define the OMOP CDM version used:  currently supports v5 and above.  Default = "5". v4 support is in \code{\link{achilles_v4}}.}
 
-\item{vocabDatabaseSchema}{string name of database schema that contains OMOP Vocabulary. Default is cdmDatabaseSchema. On SQL Server, this should specifiy both the database and the schema, so for example 'results.dbo'.}
+\item{sqlOnly}{TRUE = just generate SQL files, don't actually run, FALSE = run Achilles}
 
-\item{sourceName}{string name of the database, as recorded in results}
+\item{numThreads}{(optional) Only for v5.x: The number of threads to use to run Achilles in parallel. Default is 1 thread.}
+
+\item{tempHeelPrefix}{(optional) The prefix to use for the "temporary" (but actually permanent) Heel tables. Default is "tmpheel"}
+
+\item{dropScratchTables}{In multi-threaded mode: TRUE = drop the scratch tables (may take time depending on dbms), FALSE = leave them in place}
+
+\item{ThresholdAgeWarning}{The maximum age to allow in Heel}
+
+\item{ThresholdOutpatientVisitPerc}{The maximum percentage of outpatient visits among all visits}
+
+\item{ThresholdMinimalPtMeasDxRx}{The minimum percentage of patients with at least 1 Measurement, 1 Dx, and 1 Rx}
 }
 \value{
 nothing is returned
@@ -36,7 +49,11 @@ nothing is returned
 \examples{
 \dontrun{
   connectionDetails <- createConnectionDetails(dbms="sql server", server="RNDUSRDHIT07.jnj.com")
-  achillesHeel <- achilles(connectionDetails, cdmDatabaseSchema="mycdm", resultsDatabaseSchema="scratch", vocabDatabaseSchema="vocabulary")
+  achillesHeel <- achillesHeel(connectionDetails = connectionDetails, 
+                               cdmDatabaseSchema = "cdm", 
+                               resultsDatabaseSchema = "results", 
+                               scratchDatabaseSchema = "scratch",
+                               cdmVersion = "5.0.1",
+                               numThreads = 10)
 }
 }
-

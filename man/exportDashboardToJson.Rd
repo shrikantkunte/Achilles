@@ -35,4 +35,3 @@ from the other exports and aggregates them into a single file. If other reports 
   exportDashboardToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

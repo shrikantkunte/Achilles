@@ -34,4 +34,3 @@ Creates individual files for Condition report found in Achilles.Web
   exportConditionToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

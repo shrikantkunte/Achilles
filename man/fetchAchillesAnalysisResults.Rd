@@ -29,4 +29,3 @@ See \code{data(analysesDetails)} for a list of all Achilles analyses and their I
   fetchAchillesAnalysisResults(connectionDetails, "scratch",106)
 }
 }
-

@@ -34,4 +34,3 @@ Creates individual files for Measurement report found in Achilles.Web
   exportMeasurementToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

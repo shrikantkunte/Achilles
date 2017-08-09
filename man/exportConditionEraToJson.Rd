@@ -34,4 +34,3 @@ Creates individual files for Condition Era report found in Achilles.Web
   exportConditionEraToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-

@@ -37,4 +37,3 @@ Creates individual files for each report found in Achilles.Web
   exportToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }
-
