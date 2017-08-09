@@ -81,6 +81,7 @@ showReportTypes <- function()
 #' @param resultsDatabaseSchema  		Name of the database schema that contains the Achilles analysis files. Default is cdmDatabaseSchema
 #' @param outputPath		A folder location to save the JSON files. Default is current working folder
 #' @param reports       A character vector listing the set of reports to generate. Default is all reports. 
+#' @param cdmVersion            Define the OMOP CDM version used. Default is "5".
 #' @param vocabDatabaseSchema		string name of database schema that contains OMOP Vocabulary. Default is cdmDatabaseSchema. On SQL Server, this should specifiy both the database and the schema, so for example 'results.dbo'.
 #' See \code{data(allReports)} for a list of all report types
 #' 
@@ -90,7 +91,13 @@ showReportTypes <- function()
 #'   exportToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), reports = allReports, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportToJson <- function (connectionDetails, 
+                          cdmDatabaseSchema, 
+                          resultsDatabaseSchema, 
+                          outputPath = getwd(), 
+                          reports = allReports, 
+                          cdmVersion = "5", 
+                          vocabDatabaseSchema = cdmDatabaseSchema)
 {
   start <- Sys.time()
   if (missing(resultsDatabaseSchema))
@@ -581,13 +588,19 @@ exportVisitToJson <- function (connectionDetails, cdmDatabaseSchema, resultsData
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("VISIT"), cdmVersion, vocabDatabaseSchema)  
 }
 
-addCdmVersionPath <- function(sqlFilename,cdmVersion){
-  if (cdmVersion == "4") {
+addCdmVersionPath <- function(sqlFilename,cdmVersion)
+{
+  if (cdmVersion == "4")
+  {
     sqlFolder <- "v4/export_v4"
-  } else if (cdmVersion %in% c("5", "5.0.1")) {
+  }
+  else if (compareVersion(cdmVersion, "5") >= 0)
+  {
     sqlFolder <- "v5/export"
-  } else {
-    stop("Error: Invalid CDM Version number, use 4, 5, or 5.0.1")
+  }
+  else
+  {
+    stop("Error: Invalid CDM Version number, use 4 or 5.x")
   }
   paste(sqlFolder,sqlFilename,sep="")
 }

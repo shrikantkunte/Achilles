@@ -50,8 +50,9 @@ achillesHeel_v4 <- function (connectionDetails,
                              resultsDatabaseSchema = cdmDatabaseSchema,
                              vocabDatabaseSchema = cdmDatabaseSchema){
   
+  inputFolder <- "v4"
   heelFile <- "AchillesHeel_v4.sql"
-  heelSql <- loadRenderTranslateSql(sqlFilename = heelFile,
+  heelSql <- loadRenderTranslateSql(sqlFilename = paste(inputFolder, heelFile, sep = "/"),
                                     packageName = "Achilles",
                                     dbms = connectionDetails$dbms,
                                     oracleTempSchema = oracleTempSchema,
@@ -62,10 +63,10 @@ achillesHeel_v4 <- function (connectionDetails,
                                     vocab_database_schema = vocabDatabaseSchema
   );
   
-  conn <- connect(connectionDetails);
+  connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
   writeLines("Executing Achilles Heel. This could take a while");
-  executeSql(conn,heelSql);
-  dummy <- dbDisconnect(conn);
+  DatabaseConnector::executeSql(connection = connection, sql = heelSql)
+  DatabaseConnector::disconnect(connection = connection);
   writeLines(paste("Done. Achilles Heel results can now be found in",resultsDatabaseSchema))
 }
 
@@ -73,12 +74,11 @@ achillesHeel_v4 <- function (connectionDetails,
 #' @export
 fetchAchillesHeelResults <- function (connectionDetails, resultsDatabaseSchema){
   connectionDetails$schema = resultsDatabaseSchema
-  conn <- connect(connectionDetails)
-  
+  connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
   
   sql <- "SELECT * FROM ACHILLES_heel_results"
-  sql <- renderSql(sql)$sql
-  res <- dbGetQuery(conn,sql)
+  sql <- SqlRender::translateSql(sql = sql, targetDialect = connectionDetails$dbms)$sql
+  res <- DatabaseConnector::querySql(connection = connection, sql = sql)
   res
 }
 
@@ -126,72 +126,74 @@ achilles_v4 <- function (connectionDetails,
                          sqlOnly = FALSE)
 {
   cdmVersion <- 4
-  achillesFile <- "v4/Achilles_v4.sql"
-  heelFile <- "v4/AchillesHeel_v4.sql"
+  inputFolder <- "v4"
+  achillesFile <- "Achilles_v4.sql"
+  heelFile <- "AchillesHeel_v4.sql"
   
   if (missing(analysisIds))
     analysisIds = getAnalysisDetails()$ANALYSIS_ID
   
-  achillesSql <- loadRenderTranslateSql(sqlFilename = achillesFile,
+  achillesSql <- loadRenderTranslateSql(sqlFilename = paste(inputFolder, achillesFile, sep = "/"),
                                         packageName = "Achilles",
                                         dbms = connectionDetails$dbms,
-                                        is_pdw = connectionDetails$dbms=='pdw',
                                         oracleTempSchema = oracleTempSchema,
-                                        # cdm_database = cdmDatabase,
                                         cdm_database_schema = cdmDatabaseSchema,
-                                        # results_database = resultsDatabase, 
                                         results_database_schema = resultsDatabaseSchema,
                                         source_name = sourceName, 
                                         list_of_analysis_ids = analysisIds,
                                         createTable = createTable,
                                         smallcellcount = smallcellcount,
                                         validateSchema = validateSchema,
-                                        # vocab_database = vocabDatabase,
                                         vocab_database_schema = vocabDatabaseSchema,
                                         runCostAnalysis = runCostAnalysis
   )
   
-  if (sqlOnly) {
+  if (sqlOnly)
+  {
     outputFolder <- "output";
     
     if (!file.exists(outputFolder))
       dir.create(outputFolder);
-    writeSql(achillesSql,paste(outputFolder, achillesFile, sep="/"));
+    writeSql(achillesSql,paste(outputFolder, achillesFile, sep="/"))
     
-    writeLines(paste("Achilles sql generated in: ", paste(outputFolder, achillesFile, sep="/")));
+    writeLines(paste("Achilles sql generated in: ", paste(outputFolder, achillesFile, sep="/")))
     
-    return();
-  } else {
-    conn <- connect(connectionDetails)
+    return()
+  }
+  else
+  {
+    connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
     writeLines("Executing multiple queries. This could take a while")
-    #writeSql(achillesSql, 'achillesDebug.sql');
-    executeSql(conn,achillesSql)
+    DatabaseConnector::executeSql(connection = connection, sql = achillesSql)
     writeLines(paste("Done. Achilles results can now be found in",resultsDatabaseSchema))
   }
   
-  if (runHeel) {
-    heelSql <- loadRenderTranslateSql(sqlFilename = heelFile,
+  if (runHeel)
+  {
+    heelSql <- loadRenderTranslateSql(sqlFilename = paste(inputFolder, heelFile, sep = "/"),
                                       packageName = "Achilles",
                                       dbms = connectionDetails$dbms,
                                       oracleTempSchema = oracleTempSchema,
                                       cdm_database_schema = cdmDatabaseSchema,
-                                      # results_database = resultsDatabase,
                                       results_database_schema = resultsDatabaseSchema,
                                       source_name = sourceName, 
                                       list_of_analysis_ids = analysisIds,
                                       createTable = createTable,
                                       smallcellcount = smallcellcount,
-                                      # vocab_database = vocabDatabase,
                                       vocab_database_schema = vocabDatabaseSchema
     )
     
     writeLines("Executing Achilles Heel. This could take a while")
-    executeSql(conn,heelSql)
+    DatabaseConnector::executeSql(connection = connection, sql = heelSql)
     writeLines(paste("Done. Achilles Heel results can now be found in",resultsDatabaseSchema))    
     
-  } else heelSql='HEEL EXECUTION SKIPPED PER USER REQUEST'
+  }
+  else 
+  {
+    heelSql='HEEL EXECUTION SKIPPED PER USER REQUEST'
+  }
   
-  dummy <- dbDisconnect(conn)
+  DatabaseConnector::disconnect(connection = connection)
   
   resultsConnectionDetails <- connectionDetails
   resultsConnectionDetails$schema = resultsDatabaseSchema
