@@ -8,7 +8,7 @@
 #' that should really be fixed) and warnings (things that should at least be investigated).
 #'
 #' @param connectionDetails  An R object of type ConnectionDetail (details for the function that contains server info, database type, optionally username/password, port)
-#' @param resultsDatabase		Name of database containing the Achilles descriptive statistics. 
+#' @param resultsDatabaseSchema		Name of database containing the Achilles descriptive statistics. 
 #' 
 #' @return A table listing all identified issues 
 #' @examples \dontrun{
@@ -17,14 +17,14 @@
 #'   fetchAchillesHeelResults(connectionDetails, "scratch")
 #' }
 #' @export
-fetchAchillesHeelResults <- function (connectionDetails, resultsDatabase){
-  connectionDetails$schema = resultsDatabase
-  conn <- connect(connectionDetails)
+fetchAchillesHeelResults <- function (connectionDetails, resultsDatabaseSchema){
+  connectionDetails$schema = resultsDatabaseSchema
+  connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
   
   sql <- "SELECT * FROM ACHILLES_HEEL_results"
-  issues <- dbGetQuery(conn,sql)
+  issues <- DatabaseConnector::querySql(connection = connection, sql = sql)
   
-  dummy <- dbDisconnect(conn)
+  DatabaseConnector::disconnect(connection = connection)
   
   issues
 }
@@ -38,7 +38,7 @@ fetchAchillesHeelResults <- function (connectionDetails, resultsDatabase){
 #' See \code{data(analysesDetails)} for a list of all Achilles analyses and their Ids.
 #'
 #' @param connectionDetails  An R object of type ConnectionDetail (details for the function that contains server info, database type, optionally username/password, port)
-#' @param resultsDatabase  	Name of database containing the Achilles descriptive statistics. 
+#' @param resultsDatabaseSchema  	Name of database containing the Achilles descriptive statistics. 
 #' @param analysisId   A single analysisId
 #' 
 #' @return An object of type \code{achillesAnalysisResults}
@@ -48,22 +48,22 @@ fetchAchillesHeelResults <- function (connectionDetails, resultsDatabase){
 #'   fetchAchillesAnalysisResults(connectionDetails, "scratch",106)
 #' }
 #' @export
-fetchAchillesAnalysisResults <- function (connectionDetails, resultsDatabase, analysisId){
-  connectionDetails$schema = resultsDatabase
-  conn <- connect(connectionDetails)
+fetchAchillesAnalysisResults <- function (connectionDetails, resultsDatabaseSchema, analysisId){
+  connectionDetails$schema = resultsDatabaseSchema
+  connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
   
   sql <- "SELECT * FROM ACHILLES_analysis WHERE analysis_id = @analysisId"
-  sql <- renderSql(sql,analysisId = analysisId)$sql
-  analysisDetails <- dbGetQuery(conn,sql)
+  sql <- SqlRender::renderSql(sql = sql, analysisId = analysisId)$sql
+  analysisDetails <- DatabaseConnector::querySql(connection = connection, sql = sql)
   
   sql <- "SELECT * FROM ACHILLES_results WHERE analysis_id = @analysisId"
-  sql <- renderSql(sql,analysisId = analysisId)$sql
-  analysisResults <- dbGetQuery(conn,sql)
+  sql <- SqlRender::renderSql(sql = sql, analysisId = analysisId)$sql
+  analysisResults <- DatabaseConnector::querySql(connection = connection, sql = sql)
   
   if (nrow(analysisResults) == 0){
     sql <- "SELECT * FROM ACHILLES_results_dist WHERE analysis_id = @analysisId"
-    sql <- renderSql(sql,analysisId = analysisId)$sql
-    analysisResults <- dbGetQuery(conn,sql)
+    sql <- SqlRender::renderSql(sql = sql, analysisId = analysisId)$sql
+    analysisResults <- DatabaseConnector::querySql(connection = connection, sql = sql)
   }
   
   colnames(analysisDetails) <- toupper(colnames(analysisDetails))
@@ -78,7 +78,7 @@ fetchAchillesAnalysisResults <- function (connectionDetails, resultsDatabase, an
     }
   }
   
-  dummy <- dbDisconnect(conn)
+  DatabaseConnector::disconnect(connection = connection)
   
   result <- list(analysisId = analysisId,
                  analysisName = analysisDetails$ANALYSIS_NAME,

@@ -16,8 +16,7 @@ test_that("Achilles main does not throw an error on BigQuery", {
                            resultsDatabaseSchema = Sys.getenv("CDM5_BIGQUERY_OHDSI_SCHEMA"), 
                            sourceName = "OHDSI CDM V5 Database", 
                            cdmVersion = "5", 
-                           validateSchema = FALSE, 
-                           createTable = TRUE))
+                           validateCdmSchema = FALSE))
     if (file.exists("errorReport.txt")){
       writeLines(readChar("errorReport.txt", file.info("errorReport.txt")$size))
     }

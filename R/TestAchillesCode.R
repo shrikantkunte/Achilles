@@ -2,18 +2,14 @@
 
 testAchillesCode <- function(){
   pw <- ""
-  #sqlServerServer <- "RNDUSRDHIT07.jnj.com"
-  #sqlServerResultsSchema <- "scratch"
-  #schema <- "cdm4_sim"
+  sqlServerServer <- "some_sql_server"
   
-  sqlServerServer <- "RNDUSRDHIT09.jnj.com"
-  
-  sqlServerResultsSchema <- "cdm_truven_ccae_6k.dbo"
-  schema <- "cdm_truven_ccae_6k.dbo"
+  sqlServerResultsSchema <- "cdm_instance_v4.results"
+  schema <- "cdm_instance_v4.dbo"
   cdmVersion <- "4"
   
-  sqlServerResultsSchema <- "cdm_truven_ccae_6k_v5.dbo"
-  schema <- "cdm_truven_ccae_6k_v5.dbo"
+  sqlServerResultsSchema <- "cdm_instance_v5.results"
+  schema <- "cdm_instance_v5.dbo"
   cdmVersion <- "5"
   
   #Test on SQL Server:
@@ -23,11 +19,11 @@ testAchillesCode <- function(){
 
   
   
-  sqlServerResultsSchema <- "cdm_truven_ccae_6k"
-  schema <- "cdm_truven_ccae_6k"
+  sqlServerResultsSchema <- "cdm_instance_v4.results"
+  schema <- "cdm_instance_v4.dbo"
   cdmVersion <- "4"
   
-  schema <- "cdm_truven_ccae_6k_v5"
+  schema <- "cdm_instance_v5.dbo"
   cdmVersion <- "5"
   
   #Test on PostgreSQL
@@ -128,20 +124,20 @@ testAchillesCode <- function(){
   
   #Compare Sql Server and Postgres:
   connectionDetailsSqlServer$schema = sqlServerResultsSchema
-  connSqlServer <- connect(connectionDetailsSqlServer)
+  connSqlServer <- DatabaseConnector::connect(connectionDetails = connectionDetailsSqlServer)
   
   connectionDetailsPostgreSql$schema = "scratch"
-  connPostgreSql <- connect(connectionDetailsPostgreSql)
+  connPostgreSql <- DatabaseConnector::connect(connectionDetails = connectionDetailsPostgreSql)
   
-  compareResults(connSqlServer,connPostgreSql)
+  compareResults(connSqlServer, connPostgreSql)
   
   #Compare Sql Server and Oracle:
   connectionDetailsSqlServer$schema = sqlServerResultsSchema
-  connSqlServer <- connect(connectionDetailsSqlServer)
+  connSqlServer <- DatabaseConnector::connect(connectionDetails = connectionDetailsSqlServer)
   
   connectionDetailsOracle$schema = "scratch"
-  connOracle <- connect(connectionDetailsOracle)
+  connOracle <- DatabaseConnector::connect(connectionDetails = connectionDetailsOracle)
   
-  compareResults(connOracle,connSqlServer)
+  compareResults(connOracle, connSqlServer)
   #Note: differences will be found for 1411,1412 because of reverse sorting of dates due to different formats
 }

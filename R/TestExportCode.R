@@ -2,18 +2,15 @@
 
 testExportCode <- function(){
   pw <- ""
-  #sqlServerServer <- "RNDUSRDHIT07.jnj.com"
-  #sqlServerresultsDatabaseSchema <- "scratch"
-  #schema <- "cdm4_sim"
+
+  sqlServerServer <- "some_sql_server"
   
-  sqlServerServer <- "RNDUSRDHIT09.jnj.com"
-  
-  sqlServerresultsDatabaseSchema <- "cdm_truven_ccae_6k.dbo"
-  schema <- "cdm_truven_ccae_6k.dbo"
+  sqlServerresultsDatabaseSchema <- "cdm_instance_v4.results"
+  schema <- "cdm_instance_v4.dbo"
   cdmVersion <- "4"
   
-  sqlServerresultsDatabaseSchema <- "cdm_truven_ccae_6k_v5.dbo"
-  schema <- "cdm_truven_ccae_6k_v5.dbo"
+  sqlServerresultsDatabaseSchema <- "cdm_instance_v5.results"
+  schema <- "cdm_instance_v5.dbo"
   cdmVersion <- "5"
   
   #Test on SQL Server
@@ -23,12 +20,12 @@ testExportCode <- function(){
   
   #Test on PostgreSQL
   
-  sqlServerresultsDatabaseSchema <- "cdm_truven_ccae_6k"
-  schema <- "cdm_truven_ccae_6k"
+  sqlServerresultsDatabaseSchema <- "results_v4"
+  schema <- "cdm_v4"
   cdmVersion <- "4"
   
-  sqlServerresultsDatabaseSchema <- "cdm_truven_ccae_6k_v5"
-  schema <- "cdm_truven_ccae_6k_v5"
+  sqlServerresultsDatabaseSchema <- "results_v5"
+  schema <- "cdm_v5"
   cdmVersion <- "5"
   
   setwd("c:/temp")
@@ -67,10 +64,10 @@ testExportCode <- function(){
   compareJSONFiles("c:/temp/postgresql","c:/temp/sqlserver")
   
   connectionDetails <- createConnectionDetails(dbms="oracle", server="xe", user="system", schema="scratch",password=pw)
-  conn <- connect(connectionDetails)
-  analysesDetails <- dbGetQuery(conn,"SELECT * FROM ACHILLES_ANALYSiS")
+  connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
+  analysesDetails <- DatabaseConnector::querySql(connection = connection, sql = "SELECT * FROM ACHILLES_ANALYSIS")
   save(analysesDetails,"c:/temp/analysesDetails.rda")
-  dbDisconnect(conn)
+  DatabaseConnector::disconnect(connection = connection)
 }
 
 

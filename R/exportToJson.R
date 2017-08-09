@@ -1,6 +1,6 @@
 # @file exportToJson
 #
-# Copyright 2014 Observational Health Data Sciences and Informatics
+# Copyright 2017 Observational Health Data Sciences and Informatics
 #
 # This file is part of Achilles
 # 
@@ -19,6 +19,7 @@
 # @author Observational Health Data Sciences and Informatics
 # @author Chris Knoll
 # @author Frank DeFalco
+# @author Ajit Londhe
 
 
 # Run this definition of allReports when adding a new report
@@ -107,81 +108,81 @@ exportToJson <- function (connectionDetails,
   
   # connect to the results schema
   connectionDetails$schema = resultsDatabaseSchema
-  conn <- connect(connectionDetails)
+  connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
   
   # generate reports
   
   if ("CONDITION" %in% reports)
   {
-    generateConditionTreemap(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)  
-    generateConditionReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateConditionTreemap(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)  
+    generateConditionReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ("CONDITION_ERA" %in% reports)
   {
-    generateConditionEraTreemap(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
-    generateConditionEraReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateConditionEraTreemap(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateConditionEraReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ("DATA_DENSITY" %in% reports)
-    generateDataDensityReport(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateDataDensityReport(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   
   if ("DEATH" %in% reports)
   {
-    generateDeathReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateDeathReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ("DRUG_ERA" %in% reports)
   {
-    generateDrugEraTreemap(conn,connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
-    generateDrugEraReports(conn,connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateDrugEraTreemap(connection,connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateDrugEraReports(connection,connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ("DRUG" %in% reports)
   {
-    generateDrugTreemap(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)  
-    generateDrugReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateDrugTreemap(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)  
+    generateDrugReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ("HEEL" %in% reports)
   {
-    generateAchillesHeelReport(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateAchillesHeelReport(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if (("META" %in% reports) & (cdmVersion != "4"))
   {
-    generateDomainMetaReport(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateDomainMetaReport(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ( ("MEASUREMENT" %in% reports) & (cdmVersion != "4"))
   {
-    generateMeasurementTreemap(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
-    generateMeasurementReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateMeasurementTreemap(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateMeasurementReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   
   if ("OBSERVATION" %in% reports)
   {  
-    generateObservationTreemap(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
-    generateObservationReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateObservationTreemap(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateObservationReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ("OBSERVATION_PERIOD" %in% reports)  
-    generateObservationPeriodReport(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateObservationPeriodReport(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   
   if ("PERSON" %in% reports)    
-    generatePersonReport(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generatePersonReport(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   
   if ("PROCEDURE" %in% reports)
   {
-    generateProcedureTreemap(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
-    generateProcedureReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateProcedureTreemap(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateProcedureReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   if ("VISIT" %in% reports)
   {  
-    generateVisitTreemap(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
-    generateVisitReports(conn, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateVisitTreemap(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
+    generateVisitReports(connection, connectionDetails$dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion, vocabDatabaseSchema)
   }
   
   # dashboard is always last
@@ -190,7 +191,7 @@ exportToJson <- function (connectionDetails,
     generateDashboardReport(outputPath)
   }
   
-  dummy <- dbDisconnect(conn)
+  DatabaseConnector::disconnect(connection = connection)
   
   delta <- Sys.time() - start
   writeLines(paste("Export took", signif(delta,3), attr(delta,"units")))
@@ -218,7 +219,7 @@ exportToJson <- function (connectionDetails,
 #'   exportConditionToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportConditionToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportConditionToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("CONDITION"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -244,7 +245,7 @@ exportConditionToJson <- function (connectionDetails, cdmDatabaseSchema, results
 #'   exportConditionEraToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportConditionEraToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportConditionEraToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("CONDITION_ERA"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -271,7 +272,7 @@ exportConditionEraToJson <- function (connectionDetails, cdmDatabaseSchema, resu
 #'   exportDashboardToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportDashboardToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportDashboardToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("DASHBOARD"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -297,7 +298,7 @@ exportDashboardToJson <- function (connectionDetails, cdmDatabaseSchema, results
 #'   exportDataDensityToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportDataDensityToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportDataDensityToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("DATA_DENSITY"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -323,7 +324,7 @@ exportDataDensityToJson <- function (connectionDetails, cdmDatabaseSchema, resul
 #'   exportDeathToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportDeathToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportDeathToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("DEATH"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -349,7 +350,7 @@ exportDeathToJson <- function (connectionDetails, cdmDatabaseSchema, resultsData
 #'   exportDrugToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportDrugToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportDrugToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("DRUG"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -375,7 +376,7 @@ exportDrugToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatab
 #'   exportDrugEraToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportDrugEraToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportDrugEraToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("DRUG_ERA"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -401,7 +402,7 @@ exportDrugEraToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDa
 #'   exportHeelToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportHeelToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportHeelToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("HEEL"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -427,7 +428,7 @@ exportHeelToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatab
 #'   exportMetaToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportMetaToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportMetaToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("META"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -453,7 +454,7 @@ exportMetaToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatab
 #'   exportMeasurementToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportMeasurementToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportMeasurementToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("MEASUREMENT"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -479,7 +480,7 @@ exportMeasurementToJson <- function (connectionDetails, cdmDatabaseSchema, resul
 #'   exportObservationToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportObservationToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportObservationToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("OBSERVATION"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -505,7 +506,7 @@ exportObservationToJson <- function (connectionDetails, cdmDatabaseSchema, resul
 #'   exportObservationPeriodToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportObservationPeriodToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportObservationPeriodToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("OBSERVATION_PERIOD"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -531,7 +532,7 @@ exportObservationPeriodToJson <- function (connectionDetails, cdmDatabaseSchema,
 #'   exportPersonToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportPersonToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportPersonToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("PERSON"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -557,7 +558,7 @@ exportPersonToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDat
 #'   exportProcedureToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportProcedureToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportProcedureToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("PROCEDURE"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -583,7 +584,7 @@ exportProcedureToJson <- function (connectionDetails, cdmDatabaseSchema, results
 #'   exportVisitToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 #' }
 #' @export
-exportVisitToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion="4", vocabDatabaseSchema = cdmDatabaseSchema)
+exportVisitToJson <- function (connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   exportToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, reports = c("VISIT"), cdmVersion, vocabDatabaseSchema)  
 }
@@ -605,7 +606,7 @@ addCdmVersionPath <- function(sqlFilename,cdmVersion)
   paste(sqlFolder,sqlFilename,sep="")
 }
 
-generateAchillesHeelReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateAchillesHeelReport <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating achilles heel report")
   output <- {}
   
@@ -617,12 +618,12 @@ generateAchillesHeelReport <- function(conn, dbms, cdmDatabaseSchema, resultsDat
                                               vocab_database_schema = vocabDatabaseSchema
   )  
   
-  output$MESSAGES <- querySql(conn,queryAchillesHeel)
+  output$MESSAGES <- DatabaseConnector::querySql(connection,queryAchillesHeel)
   jsonOutput = toJSON(output)
   write(jsonOutput, file=paste(outputPath, "/achillesheel.json", sep=""))  
 }
 
-generateDomainMetaReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateDomainMetaReport <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating domain meta report")
   output <- {}
   
@@ -632,9 +633,9 @@ generateDomainMetaReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
                                             cdm_database_schema = cdmDatabaseSchema
   )  
   
-  if ("CDM_DOMAIN_META" %in% DatabaseConnector::getTableNames(connection = conn, databaseSchema = cdmDatabaseSchema))
+  if ("CDM_DOMAIN_META" %in% DatabaseConnector::getTableNames(connection = connection, databaseSchema = cdmDatabaseSchema))
   {
-    output$MESSAGES <- querySql(conn, queryDomainMeta) 
+    output$MESSAGES <- DatabaseConnector::querySql(connection, queryDomainMeta) 
     jsonOutput = toJSON(output)
     write(jsonOutput, file=paste(outputPath, "/domainmeta.json", sep=""))  
   }
@@ -644,7 +645,7 @@ generateDomainMetaReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
   }
 }
 
-generateDrugEraTreemap <- function(conn, dbms,cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateDrugEraTreemap <- function(connection, dbms,cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating drug era treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -657,7 +658,7 @@ generateDrugEraTreemap <- function(conn, dbms,cdmDatabaseSchema, resultsDatabase
                                                 vocab_database_schema = vocabDatabaseSchema
   )  
   
-  dataDrugEraTreemap <- querySql(conn,queryDrugEraTreemap) 
+  dataDrugEraTreemap <- DatabaseConnector::querySql(connection,queryDrugEraTreemap) 
   
   write(toJSON(dataDrugEraTreemap,method="C"),paste(outputPath, "/drugera_treemap.json", sep=''))
   progress = progress + 1
@@ -666,7 +667,7 @@ generateDrugEraTreemap <- function(conn, dbms,cdmDatabaseSchema, resultsDatabase
   close(progressBar)  
 }
 
-generateDrugTreemap <- function(conn, dbms,cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateDrugTreemap <- function(connection, dbms,cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating drug treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -679,7 +680,7 @@ generateDrugTreemap <- function(conn, dbms,cdmDatabaseSchema, resultsDatabaseSch
                                              vocab_database_schema = vocabDatabaseSchema
   )  
   
-  dataDrugTreemap <- querySql(conn,queryDrugTreemap) 
+  dataDrugTreemap <- DatabaseConnector::querySql(connection,queryDrugTreemap) 
   
   write(toJSON(dataDrugTreemap,method="C"),paste(outputPath, "/drug_treemap.json", sep=''))
   progress = progress + 1
@@ -688,7 +689,7 @@ generateDrugTreemap <- function(conn, dbms,cdmDatabaseSchema, resultsDatabaseSch
   close(progressBar)  
 }
 
-generateConditionTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateConditionTreemap <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating condition treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -701,7 +702,7 @@ generateConditionTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
                                                    vocab_database_schema = vocabDatabaseSchema
   )  
   
-  dataConditionTreemap <- querySql(conn,queryConditionTreemap) 
+  dataConditionTreemap <- DatabaseConnector::querySql(connection,queryConditionTreemap) 
   
   write(toJSON(dataConditionTreemap,method="C"),paste(outputPath, "/condition_treemap.json", sep=''))
   progress = progress + 1
@@ -710,7 +711,7 @@ generateConditionTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
   close(progressBar)
 }
 
-generateConditionEraTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateConditionEraTreemap <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating condition era treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -723,7 +724,7 @@ generateConditionEraTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDa
                                                      vocab_database_schema = vocabDatabaseSchema
   )  
   
-  dataConditionEraTreemap <- querySql(conn,queryConditionEraTreemap) 
+  dataConditionEraTreemap <- DatabaseConnector::querySql(connection,queryConditionEraTreemap) 
   
   write(toJSON(dataConditionEraTreemap,method="C"),paste(outputPath, "/conditionera_treemap.json", sep=''))
   progress = progress + 1
@@ -732,7 +733,7 @@ generateConditionEraTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDa
   close(progressBar)
 }
 
-generateConditionReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateConditionReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating condition reports")
   
   treemapFile <- file.path(outputPath,"condition_treemap.json")
@@ -789,10 +790,10 @@ generateConditionReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
                                                      vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)  
-  dataConditionsByType <- querySql(conn,queryConditionsByType)    
-  dataAgeAtFirstDiagnosis <- querySql(conn,queryAgeAtFirstDiagnosis)    
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)  
+  dataConditionsByType <- DatabaseConnector::querySql(connection,queryConditionsByType)    
+  dataAgeAtFirstDiagnosis <- DatabaseConnector::querySql(connection,queryAgeAtFirstDiagnosis)    
   
   
   buildConditionReport <- function(concept_id) {
@@ -818,7 +819,7 @@ generateConditionReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
   close(progressBar)
 }
 
-generateConditionEraReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateConditionEraReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating condition era reports")
   
   treemapFile <- file.path(outputPath,"conditionera_treemap.json")
@@ -874,10 +875,10 @@ generateConditionEraReports <- function(conn, dbms, cdmDatabaseSchema, resultsDa
                                              vocab_database_schema = vocabDatabaseSchema
   )  
   
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)  
-  dataLengthOfEra <- querySql(conn,queryLengthOfEra)    
-  dataAgeAtFirstDiagnosis <- querySql(conn,queryAgeAtFirstDiagnosis)    
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)  
+  dataLengthOfEra <- DatabaseConnector::querySql(connection,queryLengthOfEra)    
+  dataAgeAtFirstDiagnosis <- DatabaseConnector::querySql(connection,queryAgeAtFirstDiagnosis)    
   
   
   buildConditionEraReport <- function(concept_id) {
@@ -903,7 +904,7 @@ generateConditionEraReports <- function(conn, dbms, cdmDatabaseSchema, resultsDa
   close(progressBar)
 }
 
-generateDrugEraReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateDrugEraReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating drug era reports")
   
   
@@ -960,10 +961,10 @@ generateDrugEraReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabas
                                              vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataAgeAtFirstExposure <- querySql(conn,queryAgeAtFirstExposure) 
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)
-  dataLengthOfEra <- querySql(conn,queryLengthOfEra)
+  dataAgeAtFirstExposure <- DatabaseConnector::querySql(connection,queryAgeAtFirstExposure) 
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)
+  dataLengthOfEra <- DatabaseConnector::querySql(connection,queryLengthOfEra)
   
   buildDrugEraReport <- function(concept_id) {
     report <- {}
@@ -989,7 +990,7 @@ generateDrugEraReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabas
   close(progressBar)
 }
 
-generateDrugReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateDrugReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating drug reports")
   
   treemapFile <- file.path(outputPath,"drug_treemap.json")
@@ -1068,13 +1069,13 @@ generateDrugReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSc
                                                      vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataAgeAtFirstExposure <- querySql(conn,queryAgeAtFirstExposure) 
-  dataDaysSupplyDistribution <- querySql(conn,queryDaysSupplyDistribution) 
-  dataDrugsByType <- querySql(conn,queryDrugsByType) 
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)
-  dataQuantityDistribution <- querySql(conn,queryQuantityDistribution) 
-  dataRefillsDistribution <- querySql(conn,queryRefillsDistribution) 
+  dataAgeAtFirstExposure <- DatabaseConnector::querySql(connection,queryAgeAtFirstExposure) 
+  dataDaysSupplyDistribution <- DatabaseConnector::querySql(connection,queryDaysSupplyDistribution) 
+  dataDrugsByType <- DatabaseConnector::querySql(connection,queryDrugsByType) 
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)
+  dataQuantityDistribution <- DatabaseConnector::querySql(connection,queryQuantityDistribution) 
+  dataRefillsDistribution <- DatabaseConnector::querySql(connection,queryRefillsDistribution) 
   
   buildDrugReport <- function(concept_id) {
     report <- {}
@@ -1103,7 +1104,7 @@ generateDrugReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSc
   close(progressBar)
 }
 
-generateProcedureTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateProcedureTreemap <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating procedure treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -1116,7 +1117,7 @@ generateProcedureTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
                                                   vocab_database_schema = vocabDatabaseSchema
   )  
   
-  dataProcedureTreemap <- querySql(conn,queryProcedureTreemap) 
+  dataProcedureTreemap <- DatabaseConnector::querySql(connection,queryProcedureTreemap) 
   
   write(toJSON(dataProcedureTreemap,method="C"),paste(outputPath, "/procedure_treemap.json", sep=''))
   progress = progress + 1
@@ -1125,7 +1126,7 @@ generateProcedureTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
   close(progressBar)
 }
 
-generateProcedureReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateProcedureReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating procedure reports")
   
   treemapFile <- file.path(outputPath,"procedure_treemap.json")
@@ -1181,10 +1182,10 @@ generateProcedureReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
                                                       vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)  
-  dataProceduresByType <- querySql(conn,queryProceduresByType)    
-  dataAgeAtFirstOccurrence <- querySql(conn,queryAgeAtFirstOccurrence)    
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)  
+  dataProceduresByType <- DatabaseConnector::querySql(connection,queryProceduresByType)    
+  dataAgeAtFirstOccurrence <- DatabaseConnector::querySql(connection,queryAgeAtFirstOccurrence)    
   
   buildProcedureReport <- function(concept_id) {
     report <- {}
@@ -1209,7 +1210,7 @@ generateProcedureReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatab
   close(progressBar)
 }
 
-generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema)
+generatePersonReport <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   writeLines("Generating person reports")
   progressBar <- txtProgressBar(max=7,style=3)
@@ -1229,7 +1230,7 @@ generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         vocab_database_schema = vocabDatabaseSchema
   )
   
-  personSummaryData <- querySql(conn,renderedSql)
+  personSummaryData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   
@@ -1247,7 +1248,7 @@ generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  genderData <- querySql(conn,renderedSql)
+  genderData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   
@@ -1265,7 +1266,7 @@ generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  raceData <- querySql(conn,renderedSql)
+  raceData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   
@@ -1283,7 +1284,7 @@ generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  ethnicityData <- querySql(conn,renderedSql)
+  ethnicityData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   
@@ -1302,7 +1303,7 @@ generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  birthYearStats <- querySql(conn,renderedSql)
+  birthYearStats <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   
@@ -1318,7 +1319,7 @@ generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  birthYearData <- querySql(conn,renderedSql)
+  birthYearData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   
@@ -1335,7 +1336,7 @@ generatePersonReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
   close(progressBar)
 }
 
-generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema)
+generateObservationPeriodReport <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   writeLines("Generating observation period reports")
   progressBar <- txtProgressBar(max=11,style=3)
@@ -1362,7 +1363,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  ageAtFirstObservationData <- querySql(conn,renderedSql)
+  ageAtFirstObservationData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   ageAtFirstObservationHist$DATA = ageAtFirstObservationData
@@ -1380,7 +1381,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  ageByGenderData <- querySql(conn,renderedSql)
+  ageByGenderData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$AGE_BY_GENDER = ageByGenderData
@@ -1400,7 +1401,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         vocab_database_schema = vocabDatabaseSchema
   )
   
-  observationLengthStats <- querySql(conn,renderedSql)
+  observationLengthStats <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   observationLengthHist$MIN = observationLengthStats$MIN_VALUE
@@ -1415,7 +1416,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  observationLengthData <- querySql(conn,renderedSql)
+  observationLengthData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   observationLengthHist$DATA <- observationLengthData
@@ -1436,7 +1437,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  cumulativeDurationData <- querySql(conn,renderedSql)
+  cumulativeDurationData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$CUMULATIVE_DURATION = cumulativeDurationData
@@ -1453,7 +1454,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  opLengthByGenderData <- querySql(conn,renderedSql)
+  opLengthByGenderData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$OBSERVATION_PERIOD_LENGTH_BY_GENDER = opLengthByGenderData
@@ -1470,7 +1471,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  opLengthByAgeData <- querySql(conn,renderedSql)
+  opLengthByAgeData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$OBSERVATION_PERIOD_LENGTH_BY_AGE = opLengthByAgeData
@@ -1488,7 +1489,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  observedByYearStats <- querySql(conn,renderedSql)
+  observedByYearStats <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   observedByYearHist$MIN = observedByYearStats$MIN_VALUE
@@ -1504,7 +1505,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         vocab_database_schema = vocabDatabaseSchema
   )
   
-  observedByYearData <- querySql(conn,renderedSql)
+  observedByYearData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   observedByYearHist$DATA <- observedByYearData
@@ -1525,7 +1526,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  observedByMonth <- querySql(conn,renderedSql)
+  observedByMonth <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   
@@ -1543,7 +1544,7 @@ generateObservationPeriodReport <- function(conn, dbms, cdmDatabaseSchema, resul
                                         results_database_schema = resultsDatabaseSchema,
                                         vocab_database_schema = vocabDatabaseSchema
   )
-  personPeriodsData <- querySql(conn,renderedSql)
+  personPeriodsData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$PERSON_PERIODS_DATA = personPeriodsData
@@ -1589,7 +1590,7 @@ generateDashboardReport <- function(outputPath)
   close(progressBar)
 }
 
-generateDataDensityReport <- function(conn, dbms,cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema)
+generateDataDensityReport <- function(connection, dbms,cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   writeLines("Generating data density reports")
   progressBar <- txtProgressBar(max=3,style=3)
@@ -1610,7 +1611,7 @@ generateDataDensityReport <- function(conn, dbms,cdmDatabaseSchema, resultsDatab
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  totalRecordsData <- querySql(conn,renderedSql)
+  totalRecordsData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$TOTAL_RECORDS = totalRecordsData
@@ -1629,7 +1630,7 @@ generateDataDensityReport <- function(conn, dbms,cdmDatabaseSchema, resultsDatab
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  recordsPerPerson <- querySql(conn,renderedSql)
+  recordsPerPerson <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$RECORDS_PER_PERSON = recordsPerPerson
@@ -1647,7 +1648,7 @@ generateDataDensityReport <- function(conn, dbms,cdmDatabaseSchema, resultsDatab
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  conceptsPerPerson <- querySql(conn,renderedSql)
+  conceptsPerPerson <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$CONCEPTS_PER_PERSON = conceptsPerPerson
@@ -1659,7 +1660,7 @@ generateDataDensityReport <- function(conn, dbms,cdmDatabaseSchema, resultsDatab
   
 }
 
-generateMeasurementTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateMeasurementTreemap <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating measurement treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -1672,7 +1673,7 @@ generateMeasurementTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDat
                                                     vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataMeasurementTreemap <- querySql(conn,queryMeasurementTreemap) 
+  dataMeasurementTreemap <- DatabaseConnector::querySql(connection,queryMeasurementTreemap) 
   
   write(toJSON(dataMeasurementTreemap,method="C"),paste(outputPath, "/measurement_treemap.json", sep=''))
   progress = progress + 1
@@ -1682,7 +1683,7 @@ generateMeasurementTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDat
   
 }
 
-generateMeasurementReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema)
+generateMeasurementReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   writeLines("Generating Measurement reports")
   
@@ -1779,15 +1780,15 @@ generateMeasurementReports <- function(conn, dbms, cdmDatabaseSchema, resultsDat
                                                       vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)  
-  dataMeasurementsByType <- querySql(conn,queryMeasurementsByType)    
-  dataAgeAtFirstOccurrence <- querySql(conn,queryAgeAtFirstOccurrence)
-  dataRecordsByUnit <- querySql(conn,queryRecordsByUnit)
-  dataMeasurementValueDistribution <- querySql(conn,queryMeasurementValueDistribution)
-  dataLowerLimitDistribution <- querySql(conn,queryLowerLimitDistribution)
-  dataUpperLimitDistribution <- querySql(conn,queryUpperLimitDistribution)
-  dataValuesRelativeToNorm <- querySql(conn,queryValuesRelativeToNorm)
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)  
+  dataMeasurementsByType <- DatabaseConnector::querySql(connection,queryMeasurementsByType)    
+  dataAgeAtFirstOccurrence <- DatabaseConnector::querySql(connection,queryAgeAtFirstOccurrence)
+  dataRecordsByUnit <- DatabaseConnector::querySql(connection,queryRecordsByUnit)
+  dataMeasurementValueDistribution <- DatabaseConnector::querySql(connection,queryMeasurementValueDistribution)
+  dataLowerLimitDistribution <- DatabaseConnector::querySql(connection,queryLowerLimitDistribution)
+  dataUpperLimitDistribution <- DatabaseConnector::querySql(connection,queryUpperLimitDistribution)
+  dataValuesRelativeToNorm <- DatabaseConnector::querySql(connection,queryValuesRelativeToNorm)
   
   buildMeasurementReport <- function(concept_id) {
     report <- {}
@@ -1820,7 +1821,7 @@ generateMeasurementReports <- function(conn, dbms, cdmDatabaseSchema, resultsDat
   
 }
 
-generateObservationTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema) {
+generateObservationTreemap <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema) {
   writeLines("Generating observation treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -1833,7 +1834,7 @@ generateObservationTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDat
                                                     vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataObservationTreemap <- querySql(conn,queryObservationTreemap) 
+  dataObservationTreemap <- DatabaseConnector::querySql(connection,queryObservationTreemap) 
   
   write(toJSON(dataObservationTreemap,method="C"),paste(outputPath, "/observation_treemap.json", sep=''))
   progress = progress + 1
@@ -1843,7 +1844,7 @@ generateObservationTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDat
   
 }
 
-generateObservationReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema)
+generateObservationReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema)
 {
   writeLines("Generating Observation reports")
   
@@ -1943,17 +1944,17 @@ generateObservationReports <- function(conn, dbms, cdmDatabaseSchema, resultsDat
                                                         vocab_database_schema = vocabDatabaseSchema
     )
   }  
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)  
-  dataObservationsByType <- querySql(conn,queryObservationsByType)    
-  dataAgeAtFirstOccurrence <- querySql(conn,queryAgeAtFirstOccurrence)
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)  
+  dataObservationsByType <- DatabaseConnector::querySql(connection,queryObservationsByType)    
+  dataAgeAtFirstOccurrence <- DatabaseConnector::querySql(connection,queryAgeAtFirstOccurrence)
   if (cdmVersion == "4")
   {
-    dataRecordsByUnit <- querySql(conn,queryRecordsByUnit)
-    dataObservationValueDistribution <- querySql(conn,queryObservationValueDistribution)
-    dataLowerLimitDistribution <- querySql(conn,queryLowerLimitDistribution)
-    dataUpperLimitDistribution <- querySql(conn,queryUpperLimitDistribution)
-    dataValuesRelativeToNorm <- querySql(conn,queryValuesRelativeToNorm)
+    dataRecordsByUnit <- DatabaseConnector::querySql(connection,queryRecordsByUnit)
+    dataObservationValueDistribution <- DatabaseConnector::querySql(connection,queryObservationValueDistribution)
+    dataLowerLimitDistribution <- DatabaseConnector::querySql(connection,queryLowerLimitDistribution)
+    dataUpperLimitDistribution <- DatabaseConnector::querySql(connection,queryUpperLimitDistribution)
+    dataValuesRelativeToNorm <- DatabaseConnector::querySql(connection,queryValuesRelativeToNorm)
   }
   
   buildObservationReport <- function(concept_id) {
@@ -1990,7 +1991,7 @@ generateObservationReports <- function(conn, dbms, cdmDatabaseSchema, resultsDat
   
 }
 
-generateVisitTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema){
+generateVisitTreemap <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema){
   writeLines("Generating visit_occurrence treemap")
   progressBar <- txtProgressBar(max=1,style=3)
   progress = 0
@@ -2003,7 +2004,7 @@ generateVisitTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                               vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataVisitTreemap <- querySql(conn,queryVisitTreemap) 
+  dataVisitTreemap <- DatabaseConnector::querySql(connection,queryVisitTreemap) 
   
   write(toJSON(dataVisitTreemap,method="C"),paste(outputPath, "/visit_treemap.json", sep=''))
   progress = progress + 1
@@ -2012,7 +2013,7 @@ generateVisitTreemap <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
   close(progressBar)  
 }
 
-generateVisitReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema){
+generateVisitReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema){
   writeLines("Generating visit reports")
   
   treemapFile <- file.path(outputPath,"visit_treemap.json")
@@ -2068,10 +2069,10 @@ generateVisitReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                                       vocab_database_schema = vocabDatabaseSchema
   )
   
-  dataPrevalenceByGenderAgeYear <- querySql(conn,queryPrevalenceByGenderAgeYear) 
-  dataPrevalenceByMonth <- querySql(conn,queryPrevalenceByMonth)  
-  dataVisitDurationByType <- querySql(conn,queryVisitDurationByType)    
-  dataAgeAtFirstOccurrence <- querySql(conn,queryAgeAtFirstOccurrence)    
+  dataPrevalenceByGenderAgeYear <- DatabaseConnector::querySql(connection,queryPrevalenceByGenderAgeYear) 
+  dataPrevalenceByMonth <- DatabaseConnector::querySql(connection,queryPrevalenceByMonth)  
+  dataVisitDurationByType <- DatabaseConnector::querySql(connection,queryVisitDurationByType)    
+  dataAgeAtFirstOccurrence <- DatabaseConnector::querySql(connection,queryAgeAtFirstOccurrence)    
   
   buildVisitReport <- function(concept_id) {
     report <- {}
@@ -2096,7 +2097,7 @@ generateVisitReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
   close(progressBar)  
 }
 
-generateDeathReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "4", vocabDatabaseSchema = cdmDatabaseSchema){
+generateDeathReports <- function(connection, dbms, cdmDatabaseSchema, resultsDatabaseSchema, outputPath, cdmVersion = "5", vocabDatabaseSchema = cdmDatabaseSchema){
   writeLines("Generating death reports")
   progressBar <- txtProgressBar(max=4,style=3)
   progress = 0
@@ -2117,7 +2118,7 @@ generateDeathReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  prevalenceByGenderAgeYearData <- querySql(conn,renderedSql)
+  prevalenceByGenderAgeYearData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$PREVALENCE_BY_GENDER_AGE_YEAR = prevalenceByGenderAgeYearData
@@ -2136,7 +2137,7 @@ generateDeathReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  prevalenceByMonthData <- querySql(conn,renderedSql)
+  prevalenceByMonthData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$PREVALENCE_BY_MONTH = prevalenceByMonthData
@@ -2154,7 +2155,7 @@ generateDeathReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  deathByTypeData <- querySql(conn,renderedSql)
+  deathByTypeData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$DEATH_BY_TYPE = deathByTypeData
@@ -2172,7 +2173,7 @@ generateDeathReports <- function(conn, dbms, cdmDatabaseSchema, resultsDatabaseS
                                         vocab_database_schema = vocabDatabaseSchema
   )  
   
-  ageAtDeathData <- querySql(conn,renderedSql)
+  ageAtDeathData <- DatabaseConnector::querySql(connection,renderedSql)
   progress = progress + 1
   setTxtProgressBar(progressBar, progress)
   output$AGE_AT_DEATH = ageAtDeathData

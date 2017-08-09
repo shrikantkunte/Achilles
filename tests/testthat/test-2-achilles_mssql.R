@@ -15,8 +15,7 @@ test_that("Achilles main does not throw an error on SQL Server", {
                            resultsDatabaseSchema = Sys.getenv("CDM5_SQL_SERVER_OHDSI_SCHEMA"), 
                            sourceName = "NHANES", 
                            cdmVersion = "5", 
-                           validateSchema = FALSE, 
-                           createTable = TRUE))
+                           validateCdmSchema = FALSE))
     if (file.exists("errorReport.txt")){
       writeLines(readChar("errorReport.txt", file.info("errorReport.txt")$size))
     }
