@@ -1,14 +1,15 @@
-Achilles (v1.5)
+Achilles
 ========
  
-Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems (ACHILLES) - descriptive statistics and data quality checks on an OMOP CDM v4/v5 database
+Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems (ACHILLES) - descriptive statistics and data quality checks on an OMOP CDM v5 databases
 
 Achilles consists of several parts: 
 1. Precomputations (for database characterization) 
-2. Achilles Heel for data quality and 
+2. Achilles Heel for data quality
 3. Export feature for AchillesWeb
+4. Index generation for better performance with Atlas Data Sources
 
-Achilles Heel is actively being developed for CDM v5.x only.
+Achilles is actively being developed for CDM v5.x only.
 
 Getting Started
 ===============
@@ -29,20 +30,19 @@ Getting Started
   install_github("OHDSI/DatabaseConnector")
   install_github("OHDSI/Achilles")
   #install_github("OHDSI/Achilles",args="--no-multiarch")  #to avoid Java 32 vs 64 issues 
-  #install_github("OHDSI/OhdsiRTools@v1.3.0")#use a prior released version (to bypass fresh errors)
   ```
   
-4. To run the Achilles analysis, first determine your CDM Version. If v4, then use **achilles_v4** and/or **achillesHeel_v4** functions. If v5.x, then use the **achilles** and/or **achillesHeel** functions. If in CDM v5.x, you need to determine if you'd like to run the function in multi-threaded mode or in single-threaded mode. 
+4. To run the Achilles analysis, first determine if you'd like to run the function in multi-threaded mode or in single-threaded mode. Use 'runCostAnalysis = FALSE' to save on execution time, as cost analyses tend to run long.
 
 **In multi-threaded mode**
 
-The analyses are run in multiple SQL sessions, which can be set using the 'numThreads' setting and setting scratchDatabaseSchema to something other than '#'. For example, 10 threads means 10 independent SQL sessions. Intermediate results are written to scratch tables before finally being combined into the final results tables. Scratch tables are permanent tables; you can either choose to have Achilles drop these tables ('dropScratchTables = TRUE') or you can drop them at a later time ('dropScratchTables = FALSE'). Dropping the scratch tables can add time to the full execution. If desired, you can set a prefix for all Achilles analysis scratch tables (tempAchillesPrefix) and/or for all Achilles Heel scratch tables (tempHeelPrefix).
+The analyses are run in multiple SQL sessions, which can be set using the 'numThreads' setting and setting scratchDatabaseSchema to something other than '#'. For example, 10 threads means 10 independent SQL sessions. Intermediate results are written to scratch tables before finally being combined into the final results tables. Scratch tables are permanent tables; you can either choose to have Achilles drop these tables ('dropScratchTables = TRUE') or you can drop them at a later time ('dropScratchTables = FALSE'). Dropping the scratch tables can add time to the full execution. If desired, you can set your own custom prefix for all Achilles analysis scratch tables (tempAchillesPrefix) and/or for all Achilles Heel scratch tables (tempHeelPrefix).
 
 **In single-threaded mode**
 
 The analyses are run in one SQL session and all intermediate results are written to temp tables before finally being combined into the final results tables. Temp tables are dropped once the package is finished running. Single-threaded mode can be invoked by either setting 'numThreads = 1' or 'scratchDatabaseSchema = #'.
 
-Use 'runCostAnalysis = FALSE' to save on execution time, as cost analyses tend to run long.
+
 use the following commands in R: 
 
   ```r
@@ -54,56 +54,53 @@ use the following commands in R:
     password='secret', 
     port="5439")
   ```                              
-  **CDM v4 (can only run single-threaded)**
   
-  ```r
-  achillesResults <- achilles_v4(connectionDetails, 
-    cdmDatabaseSchema="cdm5_inst", 
-    resultsDatabaseSchema="results",
-    sourceName="My Source Name", 
-    cdmVersion = "5.0.1",
-    runHeel = TRUE,
-    runCostAnalysis = TRUE)
-  ```                            
-  **CDM v5.x, Single-threaded mode**
+  **Single-threaded mode**
   
   ```r
   achilles(connectionDetails, 
-    cdmDatabaseSchema="cdm5_inst", 
+    cdmDatabaseSchema = "cdm5_inst", 
     resultsDatabaseSchema="results",
+    vocabDatabaseSchema = "vocab",
     numThreads = 1,
-    sourceName="My Source Name", 
-    cdmVersion = "5.0.1",
+    sourceName = "My Source Name", 
+    cdmVersion = "5.3.0",
     runHeel = TRUE,
     runCostAnalysis = TRUE)
   ```
-  **CDM v5.x, Multi-threaded mode**
+  **Multi-threaded mode**
   
   ```r
   achilles(connectionDetails, 
-    cdmDatabaseSchema="cdm5_inst", 
-    resultsDatabaseSchema="results",
-    scratchDatabaseSchema="scratch",
+    cdmDatabaseSchema = "cdm5_inst", 
+    resultsDatabaseSchema = "results",
+    scratchDatabaseSchema = "scratch",
+    vocabDatabaseSchema = "vocab",
     numThreads = 10,
-    sourceName="My Source Name", 
-    cdmVersion = "5.0.1",
+    sourceName = "My Source Name", 
+    cdmVersion = "5.3.0",
     runHeel = TRUE,
     runCostAnalysis = TRUE)
   ```
   
-  "cdm5_inst" cdmDatabaseSchema parmater, "results" resultsDatabaseSchema parameter, and "scratch" scratchDatabaseSchema are the names of the schemas holding the CDM data, targeted for result writing, and holding the intermediate scratch tables, respectively. See the [DatabaseConnector](https://github.com/OHDSI/DatabaseConnector) package for details on settings the connection details for your database, for example by typing
+The "cdm5_inst" cdmDatabaseSchema parameter, "results" resultsDatabaseSchema parameter, and "scratch" scratchDatabaseSchema parameter are the fully qualified names of the schemas holding the CDM data, targeted for result writing, and holding the intermediate scratch tables, respectively. See the [DatabaseConnector](https://github.com/OHDSI/DatabaseConnector) package for details on settings the connection details for your database, for example by typing
   
-  Execution of all Achilles pre-computations may take a long time, particularly in single-threaded mode and with COST analyses enabled. See notes.md file to find out how some analyses can be excluded to make the execution faster (excluding cost pre-computations) 
+  ```r
+  ?createConnectionDetails
+  ```
   
-  Currently "sql server", "pdw", "oracle", "postgresql", "redshift", "mysql", "impala", and "bigquery" are supported as dbms. "cdmVersion" can be either 4 or 5.x (note that some Achilles features are only implemented for version 5.x).
+Execution of all Achilles pre-computations may take a long time, particularly in single-threaded mode and with COST analyses enabled. See notes.md file to find out how some analyses can be excluded to make the execution faster (excluding cost pre-computations) 
+  
+Currently "sql server", "pdw", "oracle", "postgresql", "redshift", "mysql", "impala", and "bigquery" are supported as dbms. "cdmVersion" can be *ONLY* 5.x (please look at prior commit history for v4 support).
 
-5. To use [AchillesWeb](https://github.com/OHDSI/AchillesWeb) to explore the Achilles statistics, you must first export the statistics to JSON files:
+5. To use [AchillesWeb](https://github.com/OHDSI/AchillesWeb) to explore the Achilles statistics, you must first export the statistics to a folder JSON files, which can optionally be compressed into one gzipped file for easier transportability.
   ```r
   exportToJson(connectionDetails, 
     cdmDatabaseSchema = "cdm5_inst", 
     resultsDatabaseSchema = "results", 
     outputPath = "c:/myPath/AchillesExport", 
-    cdmVersion = "5.0.1")
+    cdmVersion = "5.3.0",
+    compressIntoOneFile = TRUE # creates gzipped file of all JSON files)
   ```
 
 6. To run only Achilles Heel (component of Achilles), use the following command:
@@ -112,8 +109,8 @@ use the following commands in R:
     cdmDatabaseSchema = "cdm5_inst", 
     resultsDatabaseSchema = "results", 
     scratchDatabaseSchema = "scratch",
-    numThreads = 10,
-    cdmVersion = "5.0.1")
+    numThreads = 10, # multi-threaded mode
+    cdmVersion = "5.3.0")
   ```
 
 7. Possible optional additional steps:

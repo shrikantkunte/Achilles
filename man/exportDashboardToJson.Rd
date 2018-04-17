@@ -5,7 +5,7 @@
 \title{exportDashboardToJson}
 \usage{
 exportDashboardToJson(connectionDetails, cdmDatabaseSchema,
-  resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "4",
+  resultsDatabaseSchema, outputPath = getwd(),
   vocabDatabaseSchema = cdmDatabaseSchema)
 }
 \arguments{
@@ -31,7 +31,7 @@ from the other exports and aggregates them into a single file. If other reports 
 }
 \examples{
 \dontrun{
-  connectionDetails <- createConnectionDetails(dbms="sql server", server="yourserver")
+  connectionDetails <- DatabaseConnector::createConnectionDetails(dbms="sql server", server="yourserver")
   exportDashboardToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }

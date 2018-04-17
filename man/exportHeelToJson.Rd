@@ -5,8 +5,7 @@
 \title{exportHeelToJson}
 \usage{
 exportHeelToJson(connectionDetails, cdmDatabaseSchema, resultsDatabaseSchema,
-  outputPath = getwd(), cdmVersion = "4",
-  vocabDatabaseSchema = cdmDatabaseSchema)
+  outputPath = getwd(), vocabDatabaseSchema = cdmDatabaseSchema)
 }
 \arguments{
 \item{connectionDetails}{An R object of type ConnectionDetail (details for the function that contains server info, database type, optionally username/password, port)}
@@ -30,7 +29,7 @@ Creates individual files for Achilles Heel report found in Achilles.Web
 }
 \examples{
 \dontrun{
-  connectionDetails <- createConnectionDetails(dbms="sql server", server="yourserver")
+  connectionDetails <- DatabaseConnector::createConnectionDetails(dbms="sql server", server="yourserver")
   exportHeelToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }

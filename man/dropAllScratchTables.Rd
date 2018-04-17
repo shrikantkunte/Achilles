@@ -2,25 +2,27 @@
 % Please edit documentation in R/Achilles.R
 \name{dropAllScratchTables}
 \alias{dropAllScratchTables}
-\title{Drop all the scratch tables}
+\title{Drop all possible scratch tables}
 \usage{
 dropAllScratchTables(connectionDetails, scratchDatabaseSchema,
   tempAchillesPrefix = "tmpach", tempHeelPrefix = "tmpheel",
-  numThreads = 1)
+  numThreads = 1, tableTypes = c("achilles", "heel"))
 }
 \arguments{
-\item{connectionDetails}{An R object of type ConnectionDetail (details for the function that contains server info, database type, optionally username/password, port)}
+\item{connectionDetails}{An R object of type \code{connectionDetails} created using the function \code{createConnectionDetails} in the \code{DatabaseConnector} package.}
 
 \item{scratchDatabaseSchema}{string name of database schema that Achilles scratch tables were written to.}
 
-\item{tempAchillesPrefix}{(optional) The prefix to use for the "temporary" (but actually permanent) Achilles analyses tables. Default is "tmpach"}
+\item{tempAchillesPrefix}{The prefix to use for the "temporary" (but actually permanent) Achilles analyses tables. Default is "tmpach"}
 
-\item{tempHeelPrefix}{(optional) The prefix to use for the "temporary" (but actually permanent) Heel tables. Default is "tmpheel"}
+\item{tempHeelPrefix}{The prefix to use for the "temporary" (but actually permanent) Heel tables. Default is "tmpheel"}
 
-\item{numThreads}{(optional) Only for v5.x: The number of threads to use to run Achilles in parallel. Default is 1 thread.}
+\item{numThreads}{The number of threads to use to run this function. Default is 1 thread.}
+
+\item{tableTypes}{The types of Achilles scratch tables to drop: achilles or heel or both}
 }
 \description{
-Drop all the scratch tables
+Drop all possible scratch tables
 }
 \details{
 Drop all possible Achilles and Heel scratch tables

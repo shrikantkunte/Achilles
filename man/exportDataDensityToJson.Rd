@@ -5,7 +5,7 @@
 \title{exportDataDensityToJson}
 \usage{
 exportDataDensityToJson(connectionDetails, cdmDatabaseSchema,
-  resultsDatabaseSchema, outputPath = getwd(), cdmVersion = "4",
+  resultsDatabaseSchema, outputPath = getwd(),
   vocabDatabaseSchema = cdmDatabaseSchema)
 }
 \arguments{
@@ -30,7 +30,7 @@ Creates individual files for Data Density report found in Achilles.Web
 }
 \examples{
 \dontrun{
-  connectionDetails <- createConnectionDetails(dbms="sql server", server="yourserver")
+  connectionDetails <- DatabaseConnector::createConnectionDetails(dbms="sql server", server="yourserver")
   exportDataDensityToJson(connectionDetails, cdmDatabaseSchema="cdm4_sim", outputPath="your/output/path")
 }
 }

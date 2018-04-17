@@ -16,7 +16,10 @@ test_that("Achilles main does not throw an error on Oracle", {
                            oracleTempSchema = Sys.getenv("CDM5_ORACLE_OHDSI_SCHEMA"), 
                            sourceName = "NHANES", 
                            cdmVersion = "5", 
-                           validateCdmSchema = FALSE))
+                           validateSchema = FALSE, 
+                           createTable = TRUE,
+                           conceptHierarchy = FALSE,
+                           createIndices = FALSE))
     if (file.exists("errorReport.txt")){
       writeLines(readChar("errorReport.txt", file.info("errorReport.txt")$size))
     }
