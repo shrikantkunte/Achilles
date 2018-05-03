@@ -137,13 +137,13 @@ insert into @results_database_schema.ACHILLES_results_derived (statistic_value,m
 --and generalize analysis naming scheme (and generalize the DQ rules)
 
 insert into @results_database_schema.ACHILLES_results_derived (statistic_value,measure_id)    
-select 
-   CAST(100.0*count_value/statistic.total_pts AS FLOAT) as statistic_value,
-   CAST(CONCAT('ach_',CAST(analysis_id as VARCHAR(10)),':Percentage') AS VARCHAR(100)) as measure_id
-  from @results_database_schema.achilles_results 
-	cross join (SELECT TOP 1 count_value as total_pts from @results_database_schema.achilles_results r where analysis_id =1) as statistic
-  where analysis_id in (2000,2001,2002,2003);
-  
+  select 
+   cast(
+    100.0*count_value/(select count_value as total_pts from @resultsDatabaseSchema.achilles_results r where analysis_id = 1) 
+    as FLOAT) as statistic_value,
+   cast(concat('ach_',cast(analysis_id as VARCHAR),':Percentage') as VARCHAR(255)) as measure_id
+from @resultsDatabaseSchema.ACHILLES_results 
+where analysis_id in (2000,2001,2002,2003);
 
 
 insert into @results_database_schema.ACHILLES_results_derived (statistic_value,measure_id)    
